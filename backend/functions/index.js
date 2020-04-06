@@ -22,3 +22,24 @@ admin.initializeApp(firebaseConfig);
 exports.helloWorld = functions.https.onRequest((request, response) => {
  response.send("Hello from Firebase!");
 });
+
+exports.getScreams = functions.https.onRequest((request, response) => {
+  admin.firestore().collection("screams").get()
+  .then((data) => {
+    let screams = [];
+    data.forEach((doc) => screams.push(doc));
+    return screams;
+  }).catch(e => console.log(e))
+});
+
+exports.postScream = functions.https.onRequest((request, response) => {
+  const newScream = {
+    userHandle: request.body.userHandle,
+    body: request.body.body,
+    createdAt: admin.firestore.Timestamp.fromDate(new Date())
+  }
+  admin.firestore().collection("screams").add(newScream)
+  .then((data) => {
+    return response.json({"message": `document ${data.id} created succesfully !`});
+  }).catch(e => console.log(e))
+})
