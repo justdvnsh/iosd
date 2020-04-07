@@ -27,8 +27,10 @@ admin.initializeApp(adminConfig);
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+const db = admin.firestore();
+
 app.get("/screams", (request, response) => {
-  admin.firestore().collection("screams")
+  db.collection("screams")
   .orderBy("createdAt", "desc").get()
   .then((data) => {
     let screams = [];
@@ -42,22 +44,58 @@ app.get("/screams", (request, response) => {
   }).catch(e => console.log(e))
 });
 
-app.post("/screams", (request, response) => {
-  if (request.method !== "POST") {
-    return response.status(400).json({"error": "This is a POST method !"})
-  }
-  
+app.post("/screams", (request, response) => { 
   const newScream = {
     userHandle: request.body.userHandle,
     body: request.body.body,
     createdAt: new Date().toISOString()
   }
-  admin.firestore().collection("screams").add(newScream)
+  db.collection("screams").add(newScream)
   .then((data) => {
     return response.json({"message": `document ${data.id} created succesfully !`});
   }).catch(e =>  {
     console.log(e)
     return response.status(500).json({error: "internal server error"});
+  })
+})
+
+// login and signup routes
+// signup
+app.post("/signup", (request, response) => {
+  const newUser = {
+    email: request.body.email,
+    password: request.body.password,
+    confirmPassword: request.body.confirmPassword,
+    handle: request.body.handle
+  };
+
+  // TODO: Validate
+  let token, userId;
+  db.doc(`/users/${newUser.handle}`).get()
+  .then((doc) => {
+    if (doc.exists) {
+      return response.status(400).json({handle: "This handle is aleady taken"});
+    } else {
+      return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
+    }
+  }).then((data) => {
+    userId = data.user.uid;
+    return data.user.getIdToken();
+  }).then((idToken) => {
+    token = idToken;
+    const userCreds = {
+      handle: newUser.handle,
+      email: newUser.email,
+      createdAt: new Date().toISOString(),
+      userId
+    }
+    return db.doc(`/users/${newUser.handle}`).set(userCreds);
+  }).then(() => {
+    return response.status(201).json({token});
+  })
+  .catch(e => {
+    console.log(e);
+    return response.json({error : e.code});
   })
 })
 
