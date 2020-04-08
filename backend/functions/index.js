@@ -44,9 +44,34 @@ app.get("/screams", (request, response) => {
   }).catch(e => console.log(e))
 });
 
-app.post("/screams", (request, response) => { 
+const FBAuth = (request, response, next) => {
+
+  let idToken;
+  if (request.headers.authorization && request.headers.authorization.startsWith("Bearer ")) {
+    idToken = request.headers.authorization.split("Bearer ")[1];
+  } else {
+    console.log("No Token Found")
+    return response.status(403).json({error: "Unauthorized"})
+  }
+
+  admin.auth().verifyIdToken(idToken)
+  .then(decodedToken => {
+    request.user = decodedToken;
+    return db.collection("users").where("userId", "==", request.user.uid).limit(1).get();
+  }).then(data => {
+    request.user.handle = data.docs[0].data().handle;
+    return next();
+  })
+  .catch(e => {
+    console.log("Error while verifying token ", e);
+    return response.status(403).json(e);
+  })
+
+}
+
+app.post("/screams", FBAuth ,(request, response) => { 
   const newScream = {
-    userHandle: request.body.userHandle,
+    userHandle: request.user.handle,
     body: request.body.body,
     createdAt: new Date().toISOString()
   }
@@ -59,6 +84,20 @@ app.post("/screams", (request, response) => {
   })
 })
 
+const isEmpty = (string) => {
+  if (string.trim() === "") return true
+  else return false;
+}
+
+const ValidateData = (error) => {
+  const errors = {}
+  for (e in error) {
+    if (isEmpty(error[e])) errors[e] = "Must Not Be Empty";
+  }
+
+  return errors;
+}
+
 // login and signup routes
 // signup
 app.post("/signup", (request, response) => {
@@ -70,6 +109,10 @@ app.post("/signup", (request, response) => {
   };
 
   // TODO: Validate
+  const errors = ValidateData(newUser);
+  if (newUser.password !== newUser.confirmPassword) errors.password = "Password Must match";
+  if (Object.keys(errors).length > 0) return response.status(400).json({errors});
+
   let token, userId;
   db.doc(`/users/${newUser.handle}`).get()
   .then((doc) => {
@@ -96,6 +139,26 @@ app.post("/signup", (request, response) => {
   .catch(e => {
     console.log(e);
     return response.json({error : e.code});
+  })
+})
+
+app.post("/login", (request, response) => {
+  const user = {
+    email: request.body.email,
+    password: request.body.password
+  }
+
+  // Validate;
+  const errors = ValidateData(user);
+  if (Object.keys(errors).length > 0) return response.status(400).json({errors});
+
+  firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+  .then(data => data.user.getIdToken())
+  .then(token => response.json({token}))
+  .catch(e => {
+    console.log(e);
+    if (e.code === "auth/wrong-password") return response.status(400).json({general: "Wrong Creds"})
+    else return response.status(500).json({error: e.code});
   })
 })
 
