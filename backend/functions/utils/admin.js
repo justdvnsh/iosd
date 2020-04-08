@@ -3,7 +3,8 @@ const serviceAccount = require("../../iosd-149b9-firebase-adminsdk-fs2xu-58d579b
 
 var adminConfig = {
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://iosd-149b9.firebaseio.com"
+    databaseURL: "https://iosd-149b9.firebaseio.com",
+    storageBucket: "gs://iosd-149b9.appspot.com"
 }
  // Initialize admin
 admin.initializeApp(adminConfig); 

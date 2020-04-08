@@ -6,19 +6,26 @@ const {
 } = require('./handlers/screams');
 const {
   signup, 
-  login
+  login,
+  imageUpload
 } = require('./handlers/users');
 const FBAuth = require('./utils/fbAuth');
 
 // screams
+// get screams
 app.get("/screams", getAllScreams);
 
+// post a scream
 app.post("/screams", FBAuth , postOneScream);
 
-// login and signup routes
+// users
 // signup
 app.post("/signup", signup);
 
+// login
 app.post("/login", login);
+
+// image upload
+app.post("/user/image", FBAuth, imageUpload);
 
 exports.api = functions.https.onRequest(app);
