@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "97523930957",
+    "firebase_url": "https://iosd-149b9.firebaseio.com",
+    "project_id": "iosd-149b9",
+    "storage_bucket": "iosd-149b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97523930957:android:e6bf88074acfcab0c00904",
+        "android_client_info": {
+          "package_name": "tech.divyansh.iosd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97523930957-l06l817h89vlrlk67t9shlij528uud4b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqKO3OXxj0uJHgivQj8o27pMm2D5dVizw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97523930957-l06l817h89vlrlk67t9shlij528uud4b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
