@@ -8,6 +8,10 @@ var kPaddingWelcomeScreen = const EdgeInsets.all(20.0);
 String kWelcomeText = "I.O.S.D";
 String kSignupText = "Signup";
 String kLoginText = "Login";
+String kEmailHintText = "Enter Your email";
+String kPasswordHintText = "Enter Your Password";
+String kNotAMember = "Not Registered ? Register Here";
+String kAlreadyAMember = "Already a Member ? Login Here";
 
 // style constants
 const kTextStyleWelcomeScreen = TextStyle(
@@ -19,4 +23,8 @@ const kTextStyleWelcomeScreen = TextStyle(
 const kButtonTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 18.0,
+);
+
+const kBottomHintTextStyle = TextStyle(
+  fontSize: 14.0,
 );
