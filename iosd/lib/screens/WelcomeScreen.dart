@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iosd/utils/constants.dart';
 import 'package:iosd/utils/Buttons.dart';
+import 'LoginScreen.dart';
+import 'SignupScreen.dart';
 
 class WelcomeScreen extends StatefulWidget {
 
@@ -16,30 +18,34 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: kPaddingWelcomeScreen,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Center(
                 child: Text(
-                  "IOSD",
+                  kWelcomeText,
                   style: kTextStyleWelcomeScreen,
                 ),
               ),
               SizedBox(
-                height: 20.0,
+                height: kSizedBoxWelcomeScreenHeight,
               ),
               CustomButtons(
-                buttonText: "Login",
-                onPressed: () {},
+                buttonText: kLoginText,
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                },
               ),
               SizedBox(
-                height: 20.0,
+                height: kSizedBoxWelcomeScreenHeight,
               ),
               CustomButtons(
-                buttonText: "Signup",
-                onPressed: () {},
+                buttonText: kSignupText,
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen()));
+                },
               ),
             ],
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
+import 'colors.dart';
 
 class CustomButtons extends StatelessWidget {
 
@@ -11,13 +12,14 @@ class CustomButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
-      fillColor: Colors.blue,
+      fillColor: AccentColor,
       shape: const StadiumBorder(),
       onPressed: onPressed,
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: kPaddingWelcomeScreen,
         child: Text(
-          buttonText
+          buttonText,
+          style: kButtonTextStyle,
         ),
       ),
     );
