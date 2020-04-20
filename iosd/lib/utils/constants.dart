@@ -29,11 +29,29 @@ const kBottomHintTextStyle = TextStyle(
   fontSize: 14.0,
 );
 
+const kTextStyleSender = TextStyle(
+    fontSize: 16.0,
+);
+
 const kTextStyle = TextStyle(
-  fontSize: 18.0,
+  fontSize: 16.0,
+  color: Colors.black54
 );
 
 const kSenderStyle = TextStyle(
   fontSize: 12.0,
   color: Colors.white
+);
+
+// borders
+const kActiveSenderBorders = BorderRadius.only(
+  topLeft: Radius.circular(50.0),
+  bottomLeft: Radius.circular(50.0),
+  bottomRight: Radius.circular(50.0)
+);
+
+const kInactiveSenderBorders = BorderRadius.only(
+    bottomLeft: Radius.circular(50.0),
+    bottomRight: Radius.circular(50.0),
+    topRight:Radius.circular(50.0)
 );
