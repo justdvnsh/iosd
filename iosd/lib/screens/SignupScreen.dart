@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:iosd/screens/ChatScreen.dart';
 import 'package:iosd/utils/constants.dart';
 import 'package:iosd/utils/Buttons.dart';
 import 'LoginScreen.dart';
 import 'package:iosd/utils/inputBox.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
 
@@ -15,6 +16,12 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+
+  final _auth = FirebaseAuth.instance;
+
+  String email;
+  String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +67,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         obscureText: false,
                         keyboardType: TextInputType.emailAddress,
                         hintText: kEmailHintText,
-                        onChange: (value) {},
+                        onChange: (value) {
+                          email = value;
+                        },
                       ),
                       SizedBox(
                         height: kSizedBoxWelcomeScreenHeight,
@@ -68,14 +77,25 @@ class _SignupScreenState extends State<SignupScreen> {
                       InputBox(
                         obscureText: true,
                         hintText: kPasswordHintText,
-                        onChange: (value) {},
+                        onChange: (value) {
+                          password = value;
+                        },
                       ),
                       SizedBox(
                         height: kSizedBoxWelcomeScreenHeight,
                       ),
                       CustomButtons(
                         buttonText: kSignupText,
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            final newUser = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+                            if (newUser != null) {
+                              Navigator.pushNamed(context, ChatScreen.id);
+                            }
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
                       ),
                       SizedBox(
                         height: kSizedBoxWelcomeScreenHeight,

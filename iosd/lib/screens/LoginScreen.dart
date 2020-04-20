@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iosd/screens/ChatScreen.dart';
 import 'package:iosd/utils/constants.dart';
 import 'package:iosd/utils/Buttons.dart';
 import 'SignupScreen.dart';
@@ -14,6 +16,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  String email;
+  String password;
+
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.emailAddress,
                         hintText: kEmailHintText,
                         onChange: (value) {
-                          print(value);
+                          email = value;
                         },
                       ),
                       SizedBox(
@@ -70,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscureText: true,
                         hintText: kPasswordHintText,
                         onChange: (value) {
-                          print(value);
+                          password = value;
                         },
                       ),
                       SizedBox(
@@ -78,7 +86,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       CustomButtons(
                         buttonText: kLoginText,
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            final user = await _auth.signInWithEmailAndPassword(email: email, password: password);
+                            if (user != null) {
+                              Navigator.pushNamed(context, ChatScreen.id);
+                            }
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
                       ),
                       SizedBox(
                         height: kSizedBoxWelcomeScreenHeight,
