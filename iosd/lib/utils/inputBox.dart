@@ -5,15 +5,21 @@ import 'constants.dart';
 class InputBox extends StatelessWidget {
 
   String hintText;
+  Function onChange;
+  TextInputType keyboardType;
+  bool obscureText;
 
-  InputBox({@required this.hintText});
+  InputBox({@required this.hintText, this.onChange, this.keyboardType, this.obscureText});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      obscureText: obscureText,
+      keyboardType: keyboardType,
       style: TextStyle(
           color: Colors.white
       ),
+      onChanged: onChange,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(25.0),
         filled: false,

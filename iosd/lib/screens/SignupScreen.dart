@@ -57,13 +57,18 @@ class _SignupScreenState extends State<SignupScreen> {
                         height: kSizedBoxWelcomeScreenHeight,
                       ),
                       InputBox(
+                        obscureText: false,
+                        keyboardType: TextInputType.emailAddress,
                         hintText: kEmailHintText,
+                        onChange: (value) {},
                       ),
                       SizedBox(
                         height: kSizedBoxWelcomeScreenHeight,
                       ),
                       InputBox(
+                        obscureText: true,
                         hintText: kPasswordHintText,
+                        onChange: (value) {},
                       ),
                       SizedBox(
                         height: kSizedBoxWelcomeScreenHeight,

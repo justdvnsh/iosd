@@ -56,13 +56,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: kSizedBoxWelcomeScreenHeight,
                       ),
                       InputBox(
+                        obscureText: false,
+                        keyboardType: TextInputType.emailAddress,
                         hintText: kEmailHintText,
+                        onChange: (value) {
+                          print(value);
+                        },
                       ),
                       SizedBox(
                         height: kSizedBoxWelcomeScreenHeight,
                       ),
                       InputBox(
+                        obscureText: true,
                         hintText: kPasswordHintText,
+                        onChange: (value) {
+                          print(value);
+                        },
                       ),
                       SizedBox(
                         height: kSizedBoxWelcomeScreenHeight,
