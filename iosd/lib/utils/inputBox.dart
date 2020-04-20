@@ -8,12 +8,14 @@ class InputBox extends StatelessWidget {
   Function onChange;
   TextInputType keyboardType;
   bool obscureText;
+  TextEditingController controller;
 
-  InputBox({@required this.hintText, this.onChange, this.keyboardType, this.obscureText});
+  InputBox({this.hintText, this.onChange, this.keyboardType, this.obscureText, this.controller});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
       style: TextStyle(

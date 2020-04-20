@@ -28,3 +28,12 @@ const kButtonTextStyle = TextStyle(
 const kBottomHintTextStyle = TextStyle(
   fontSize: 14.0,
 );
+
+const kTextStyle = TextStyle(
+  fontSize: 18.0,
+);
+
+const kSenderStyle = TextStyle(
+  fontSize: 12.0,
+  color: Colors.white
+);

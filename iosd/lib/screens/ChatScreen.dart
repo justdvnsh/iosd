@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:iosd/utils/MessageBubble.dart';
 import 'package:iosd/utils/colors.dart';
 import 'package:iosd/utils/constants.dart';
 import 'package:iosd/utils/inputBox.dart';
@@ -20,6 +21,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _firestore = Firestore.instance;
   String message;
   FirebaseUser loggedInUser;
+  final messageTextController = TextEditingController();
 
   void getLoggedInUser() async {
     try {
@@ -82,14 +84,18 @@ class _ChatScreenState extends State<ChatScreen> {
                     );
                   }
                   var messages = snapshot.data.documents;
-                  List<Text> messageWidgets = [];
+                  List<MessageBubble> messageWidgets = [];
                   for(var message in messages) {
                     final text = message.data['text'];
                     final sender = message.data['sender'];
 
-                    messageWidgets.add(Text("$text from $sender"));
+                    messageWidgets.add(MessageBubble(
+                      text: text,
+                      sender: sender,
+                    ),);
                   }
-                  return Column(
+                  return ListView(
+                    padding: EdgeInsets.all(10.0),
                     children: messageWidgets,
                   );
                 },
@@ -103,6 +109,7 @@ class _ChatScreenState extends State<ChatScreen> {
               children: <Widget>[
                 Expanded(
                   child: InputBox(
+                    controller: messageTextController,
                     obscureText: false,
                     keyboardType: TextInputType.text,
                     onChange: (value) {
@@ -120,6 +127,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       'sender': loggedInUser.email,
                       'time': DateTime.now().toIso8601String()
                     });
+
+                    messageTextController.clear();
                   },
                 ),
               ],
